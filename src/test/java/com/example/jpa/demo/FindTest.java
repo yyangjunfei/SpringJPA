@@ -1,13 +1,14 @@
 package com.example.jpa.demo;
+import com.example.jpa.demo.Dao.AuthorityDao;
 import com.example.jpa.demo.Dao.UserDao;
-import com.example.jpa.demo.Entity.UserDO;
+import com.example.jpa.demo.Entity.Authority;
+import com.example.jpa.demo.Entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,71 +19,83 @@ public class FindTest {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private AuthorityDao authorityDao;
+
     @Test
     public void testLocate() {
 
-        Optional<UserDO> userDOOptional = userDao.findById(2L);
+        Optional<User> userDOOptional = userDao.findById(2L);
 
         if (userDOOptional.isPresent()) {
-            UserDO userDO = userDOOptional.get();
-            System.out.println("name = " + userDO.getName());
-            System.out.println("account = " + userDO.getAcount());
+            User userDO = userDOOptional.get();
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
         }
     }
 
     @Test
     public void testFindAll() {
-        List<UserDO> userDOList = userDao.findAll(new Sort(Sort.Direction.ASC, "acount"));
-        for (UserDO userDO : userDOList) {
-            System.out.println("name = " + userDO.getName());
-            System.out.println("account = " + userDO.getAcount());
+        List<User> userDOList = userDao.findAll(new Sort(Sort.Direction.ASC, "userAcount"));
+        for (User userDO : userDOList) {
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
         }
     }
 
     @Test
     public void testFindByAccount() {
-        UserDO userDO = userDao.findByAcount("wentian");
+        User userDO = userDao.findByUserAcount("wentian");
         if (userDO != null) {
-            System.out.println("name = " + userDO.getName());
-            System.out.println("account = " + userDO.getAcount());
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
         }
     }
 
     @Test
     public void testFindByAccountAndPwd() {
-        UserDO userDO = userDao.findByAcountAndPwd("wentian","123456");
+        User userDO = userDao.findByUserAcountAndUserPwd("wentian","123456");
         if (userDO != null) {
-            System.out.println("name = " + userDO.getName());
-            System.out.println("account = " + userDO.getAcount());
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
         }
     }
 
     @Test
     public void testFindAllByIdGreaterThan() {
-        List<UserDO> userDOList = userDao.findAllByIdGreaterThan(2L);
-        for(UserDO userDO :userDOList){
-            System.out.println("name = " + userDO.getName());
-            System.out.println("account = " + userDO.getAcount());
+        List<User> userDOList = userDao.findAllByUserIdIsGreaterThan(2L);
+        for(User userDO :userDOList){
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
         }
     }
 
     @Test
     public void testFindTwoName() {
-        List<UserDO> userDOList = userDao.findTwoName("风清扬","任我行");
-        for(UserDO userDO :userDOList){
-            System.out.println("name = " + userDO.getName());
-            System.out.println("account = " + userDO.getAcount());
+        List<User> userDOList = userDao.findTwoUserName("风清扬","任我行");
+        for(User userDO :userDOList){
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
         }
     }
 
-    /* 关联查询*/
-   @Test
+   // 关联查询
+
+    @Test
     public void testFindUsersByRole() {
-        List<UserDO> userDOList = userDao.findUsersByRole(2L);
-       for(UserDO userDO :userDOList){
-           System.out.println("name = " + userDO.getName());
-           System.out.println("account = " + userDO.getAcount());
-       }
+        List<User> userDOList = userDao.findUsersByRoleId(2L);
+        for(User userDO :userDOList){
+            System.out.println("name = " + userDO.getUserName());
+            System.out.println("account = " + userDO.getUserAcount());
+        }
+    }
+
+
+    // 根据用户id查询用户权限
+    @Test
+    public void testFindAuthorityByUserId() {
+        List<Authority> authorityList = authorityDao.findAuthorityByUserId(3L);
+        authorityList.forEach(item->System.out.println(item.getAuthorityName()));
     }
 
 }
