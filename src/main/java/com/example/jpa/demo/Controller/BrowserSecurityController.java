@@ -43,39 +43,11 @@ public class BrowserSecurityController {
         SavedRequest savedRequest = requestCache.getRequest(request, response);
         if (savedRequest != null) {
             String targetUrl =  savedRequest.getRedirectUrl();
-            System.out.println("引发跳转的请求是：" + targetUrl);
+            logger.info("引发跳转的请求是：" + targetUrl);
             if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrower().getLoginPage());
             }
         }
         return new SimpleResponse("访问的服务需要身份认证,请引导用户到登录页");
     }
-
-
-    @GetMapping("/loginhtml")
-    public String loginhtml(){
-        return "login";
-    }
-
-
-    /**
-     * 全部基于 Spring Boot给 Thymeleaf的默认配置
-     * * 所以下面会跳转到 classpath:/templates/home.html 页面
-     * * @param paramMap
-     * * @return
-     */
-
-    @PostMapping("/home")
-    public String goHome(Map<String, Object> paramMap) {   /** 默认Map的内容会放大请求域中，页面可以直接使用Thymeleaf取值*/
-        paramMap.put("name", "张三");
-        paramMap.put("age", 35);
-        return "home";
-    }
-
-
-    @PostMapping("/err")
-    public String err(){
-        return "err";
-    }
-
 }

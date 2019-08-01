@@ -1,5 +1,4 @@
 package com.example.jpa.demo.Handler;
-
 import com.example.jpa.demo.Config.LoginInType;
 import com.example.jpa.demo.Config.SecurityProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,9 @@ public class EvolutionaryAuthenticationSuccessHandler extends SavedRequestAwareA
     @Autowired
     private SecurityProperties securityProperties;
 
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+
     /**
      * 登录成功会调用该方法
      * @param request
@@ -42,13 +46,13 @@ public class EvolutionaryAuthenticationSuccessHandler extends SavedRequestAwareA
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         logger.info("登录成功！");
-        if (LoginInType.JSON.equals(securityProperties.getBrower().getLoginInType())) {
+        if (LoginInType.JSON.equals(securityProperties.getBrower().getLoginInType())){
             // 登录成功后把authentication返回给前台
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(authentication));
+            //response.setContentType("application/json;charset=UTF-8");
+            //response.getWriter().write(objectMapper.writeValueAsString(authentication));
+            redirectStrategy.sendRedirect(request, response, "/index");
         }else {
             super.onAuthenticationSuccess(request, response, authentication);
         }
-
     }
 }

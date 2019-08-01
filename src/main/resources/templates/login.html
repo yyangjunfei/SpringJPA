@@ -4,6 +4,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>登录 | SpringForAll - Spring Security</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            //点击更换验证码   拼接随机数
+            $("#changeImg").click(function(){
+                $("#imageCode").attr('src',"/code/image?d="+Math.random());
+            });
+
+         //点击图片更换验证码    拼接时间戳
+            $("#imageCode").click(function(){
+                $(this).attr('src',"/code/image?d="+new Date().getTime());
+            });
+        })
+    </script>
 </head>
 <body style="background-color: #f1f1f1; padding-bottom: 0">
 <div class="container" style="margin-top: 60px">
@@ -14,7 +29,7 @@
                     <h3 class="panel-title"><span class="glyphicon glyphicon-console"></span> Login</h3>
                 </div>
                 <div class="panel-body">
-                    <form th:action="@{/authentication/form}" method="post">
+                    <form th:action="@{/login}" method="post">
                         <div class="form-group" style="margin-top: 30px">
                             <div class="input-group col-md-6 col-md-offset-3">
                                 <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
@@ -28,7 +43,22 @@
                                        placeholder="密码">
                             </div>
                         </div>
-                        <br>
+                        <div  class="form-group " >
+                            <div class="input-group col-md-10 col-md-offset-3 " id="box2" >
+                                <span class="input-group-addon" style="display: inline">
+                                    <input type="text" name="imageCode" placeholder="验证码" style="width:25%;"/>
+                                </span>
+                                &nbsp;&nbsp;&nbsp;<img id="imageCode" src="/code/image"/>&nbsp;<a href="#" id="changeImg"style="width:14px" >看不清,换一张</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <div class="input-group col-md-6 col-md-offset-3">
+                                <input type="checkbox" name="remember-me"/> 记住我
+                            </div>
+                        </div>
+
+                        <BR/>
                         <div class="form-group">
                             <div class="input-group col-md-6 col-md-offset-3 col-xs-12 ">
                                 <button type="submit" class="btn btn-primary btn-block">登录</button>

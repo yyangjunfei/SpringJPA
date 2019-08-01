@@ -41,8 +41,10 @@ public class MyUserDetailService implements UserDetailsService {
 
 
     //注册
-    public void register( User userInfo){
-        userService.insert(userInfo);
+    public User register( User userInfo){
+       return userService.insert(userInfo);
     }
+
+
 
 }

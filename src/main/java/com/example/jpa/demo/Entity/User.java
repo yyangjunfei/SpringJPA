@@ -4,6 +4,7 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Table(name="USER")
 @Data
 @Builder
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +35,7 @@ public class User {
     @NotEmpty(message = "密码不能为空")
     @Size(max=100)
     @Column(name = "user_pwd",length = 64)
-    private  String userPwd;
+        private  String userPwd;
 
 
     //1、关系维护端，负责多对多关系的绑定和解除

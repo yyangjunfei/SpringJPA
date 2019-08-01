@@ -11,9 +11,11 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public void insert(User userInfo){
+    public User insert(User userInfo){
         encryptPassword(userInfo);
-        userDao.save(userInfo);
+        User user =userDao.save(userInfo);
+
+        return user;
     }
 
     private void encryptPassword(User userInfo){
