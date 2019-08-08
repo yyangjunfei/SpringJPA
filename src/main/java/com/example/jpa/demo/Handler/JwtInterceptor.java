@@ -1,5 +1,5 @@
 package com.example.jpa.demo.Handler;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.jpa.demo.Entity.ModelResult;
 import com.example.jpa.demo.Utils.JwtUtils;
 import io.jsonwebtoken.Claims;
@@ -16,7 +16,7 @@ import java.io.IOException;
  * @blog https://www.cnblogs.com/zeng1994/
  * @version 1.0
  */
-public class JwtInterceptor extends HandlerInterceptorAdapter {
+public class  JwtInterceptor extends HandlerInterceptorAdapter {
 
     public static final String USER_INFO_KEY = "user_info_key";
 
@@ -58,9 +58,10 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
      */
 
     private void writerErrorMsg (String code, String msg, HttpServletResponse response) throws IOException {
-        ModelResult result= ModelResult.builder().Code(code).Msg(msg).build();
+        ModelResult result= new ModelResult();
+        result.setMsg(msg);
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSON.toJSONString(result));
+        response.getWriter().write(JSONObject.toJSONString(result));
     }
 
 }

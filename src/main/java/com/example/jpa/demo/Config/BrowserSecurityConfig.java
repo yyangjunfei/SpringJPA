@@ -1,8 +1,5 @@
 package com.example.jpa.demo.Config;
-import com.example.jpa.demo.Handler.EvolutionaryAuthenticationFailHandler;
-import com.example.jpa.demo.Handler.EvolutionaryAuthenticationSuccessHandler;
-import com.example.jpa.demo.Handler.MyAuthenticationAccessDeniedHandler;
-import com.example.jpa.demo.Handler.MyLogOutSuccessHandler;
+import com.example.jpa.demo.Handler.*;
 import com.example.jpa.demo.Service.MySessionExpiredStrategy;
 import com.example.jpa.demo.Service.MyUserDetailService;
 import com.example.jpa.demo.Service.ValidateCodeFilter;
@@ -66,6 +63,7 @@ public class BrowserSecurityConfig  extends WebSecurityConfigurerAdapter {
         return jdbcTokenRepository;
     }
 
+
 /**
      * 1）HttpSecurity支持cors。
      * 2）默认会启用CRSF，此处因为没有使用thymeleaf模板（会自动注入_csrf参数），
@@ -79,13 +77,13 @@ public class BrowserSecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class) // 添加验证码校验过滤器
-                .formLogin()  //表单登录
-                .loginPage("/authentication/require")      //自定义登录页面URL
-                .loginProcessingUrl("/login")  //自定义表单登录地址
-                .successHandler(evolutionaryAuthenticationSuccessHandler)
-                .failureHandler(evolutionaryAuthenticationFailHandler)
-/*                .successForwardUrl("/home")
-                .failureForwardUrl("/err")*/
+                        .formLogin()  //表单登录
+                        .loginPage("/authentication/require")      //自定义登录页面URL
+                        .loginProcessingUrl("/login")  //自定义表单登录地址
+                        .successHandler(evolutionaryAuthenticationSuccessHandler)
+                        .failureHandler(evolutionaryAuthenticationFailHandler)
+                       .successForwardUrl("/home")
+                        .failureForwardUrl("/err")
             .and()
                 .exceptionHandling()
                 .accessDeniedHandler(myAuthenticationAccessDeniedHandler)   //自定义权限不足处理器来处理权限不足时候的操作。
@@ -102,7 +100,7 @@ public class BrowserSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .userDetailsService(myUserDetailService) //处理自动登陆逻辑
             .and()
                 .authorizeRequests()   // 授权配置
-                .antMatchers("/static","/register/**","/code/image","/session/invalid","/signout/success").permitAll()
+                .antMatchers("/static","/register/**","/code/image","/session/invalid","/signout/success","/jwt/**").permitAll()
                 .antMatchers("/authentication/require",securityProperties.getBrower().getLoginPage())//此路径放行 否则会陷入死循环
                 .permitAll()
                 .anyRequest()      // 任何请求
