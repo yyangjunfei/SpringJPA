@@ -39,12 +39,8 @@ public class MyUserDetailService implements UserDetailsService {
         return new MyUser(username, userInfo.getUserPwd(), simpleGrantedAuthorities);
     }
 
-
     //注册
     public User register( User userInfo){
        return userService.insert(userInfo);
     }
-
-
-
 }
