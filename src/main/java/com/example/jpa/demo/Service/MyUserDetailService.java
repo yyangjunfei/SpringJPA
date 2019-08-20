@@ -15,7 +15,7 @@ import java.util.List;
 @Service(value = "myUserDetailService")
 public class MyUserDetailService implements UserDetailsService {
 
-    @Autowired
+    @Autowired   //UserDetailsService验证用户名、密码和授权
     private UserService userService;
 
     @Autowired

@@ -27,9 +27,7 @@ public class EvolutionaryAuthenticationFailHandler extends SimpleUrlAuthenticati
     private SecurityProperties securityProperties;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        AuthenticationException e)
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException, ServletException {
         logger.info("登录失败");
         if (LoginInType.JSON.equals(securityProperties.getBrower().getLoginInType())) {
